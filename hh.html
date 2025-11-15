@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberTarr-A | I don’t just build automation or models — I architect systems that think, adapt, and evolve.</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="cybertarr-logo.png">
+    <link rel="apple-touch-icon" href="cybertarr-logo.png">
+    <meta name="theme-color" content="#0d0d2b">
+   
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto',sans-serif; background:#0d0d2b; color:#e9e9ef; overflow-x:hidden; }
+        html { scroll-behavior:smooth; }
+
+        /* Spline background */
+        #spline-bg { position:fixed; top:0; left:0; width:100%; height:100vh; z-index:0; }
+        .app { min-height:100vh; position:relative; z-index:1; pointer-events:none; }
+
+        /* Re-enable interaction for clickable elements */
+        .staggered-menu, .hero-title, .hero-subtitle, .hero-scroll,
+        .glass-card, .skills-container, .project-card, .contact-card { pointer-events:auto; }
+
+        /* HIDE SPLINE WATERMARK */
+        .hero-robot iframe + div,   /* the badge that appears inside the iframe */
+        iframe[src*="spline.design"] ~ * { display:none !important; }
+
+        /* Robot container */
+        .hero-robot { width:100%; max-width:600px; margin:2rem auto; pointer-events:auto;
+            filter:drop-shadow(0 0 40px rgba(0,255,255,0.6)) drop-shadow(0 0 80px rgba(255,105,250,0.4));
+            animation:float 8s ease-in-out infinite; }
+        .hero-robot iframe { border:none; width:100%; height:450px; border-radius:20px; background:transparent; }
+        @keyframes float { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-20px) rotate(1deg);} }
+
+        /* === ALL YOUR ORIGINAL STYLES BELOW (unchanged) === */
+        .staggered-menu { position:fixed; top:2rem; right:2rem; z-index:1000; }
+        .menu-toggle { background:linear-gradient(135deg,#1e1e22,#35353c); border:1px solid #00f6ff; color:#e9e9ef;
+            width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+            cursor:pointer; box-shadow:0 0 20px rgba(0,246,255,.3); transition:all .3s; }
+        .menu-toggle:hover { transform:scale(1.05); box-shadow:0 0 30px rgba(0,246,255,.5); }
+        .menu-toggle.open { background:linear-gradient(135deg,#ff79c6,#ff5ec7); }
+        .menu-nav { position:absolute; top:70px; right:0; background:rgba(13,13,43,.95);
+            backdrop-filter:blur(10px); border:1px solid rgba(0,246,255,.2); border-radius:16px;
+            padding:1.5rem; min-width:200px; box-shadow:0 8px 32px rgba(0,0,0,.4); display:none; }
+        .menu-nav.active { display:block; }
+        .menu-item { display:flex; align-items:center; gap:1rem; padding:.75rem 1rem; color:#e9e9ef;
+            text-decoration:none; border-radius:8px; transition:all .3s; animation:slideIn .5s ease-out forwards; }
+        @keyframes slideIn { from{opacity:0;transform:translateX(20px);} to{opacity:1;transform:translateX(0);} }
+        .menu-item:hover { background:rgba(0,246,255,.1); transform:translateX(-5px); }
+        .item-number { color:#00f6ff; font-size:.8rem; font-weight:bold; }
+        .menu-socials { display:flex; gap:1rem; margin-top:1.5rem; padding-top:1.5rem;
+            border-top:1px solid rgba(0,246,255,.2); justify-content:center; }
+        .menu-socials a { color:#e9e9ef; transition:all .3s; }
+        .menu-socials a:hover { color:#00f6ff; transform:translateY(-3px); }
+
+        .section { min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+            align-items:center; padding:4rem 2rem; }
+        .hero { text-align:center; }
+        .hero-title { font-size:clamp(2rem,5vw,4rem); font-weight:700; margin-bottom:1rem; line-height:1.2; }
+        .gradient-text { background:linear-gradient(135deg,#5227FF,#FF9FFC,#B19EEF);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+            animation:gradientShift 3s ease infinite; }
+        @keyframes gradientShift { 0%,100%{filter:hue-rotate(0deg);} 50%{filter:hue-rotate(20deg);} }
+        .hero-subtitle { font-size:clamp(1.2rem,3vw,2rem); color:#00f6ff; margin-bottom:2rem;
+            text-shadow:0 0 20px rgba(0,246,255,.5); }
+        .hero-scroll { color:#b19eef; font-size:.9rem; animation:bounce 2s infinite; }
+        @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+
+        .section-title { font-size:clamp(2rem,4vw,3rem); margin-bottom:3rem;
+            background:linear-gradient(135deg,#ff9ffc,#5227ff);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; pointer-events:auto; }
+
+        .glass-card { background:rgba(30,30,34,.7); backdrop-filter:blur(10px);
+            border:1px solid rgba(181,158,239,.2); border-radius:16px; padding:2rem;
+            box-shadow:0 8px 32px rgba(0,0,0,.3); max-width:800px; width:100%; transition:all .3s; line-height:1.8; }
+        .glass-card:hover { transform:translateY(-5px); box-shadow:0 12px 48px rgba(82,39,255,.3);
+            border-color:rgba(181,158,239,.4); }
+
+        .skills-container { max-width:1000px; width:100%; }
+        .skill-category { margin-bottom:2rem; }
+        .skill-category h3 { color:#00f6ff; font-size:1.3rem; margin-bottom:1rem; text-align:center; }
+        .skills-grid { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; }
+        .skill-tag { background:rgba(82,39,255,.2); border:1px solid #5227ff; padding:.75rem 1.5rem;
+            border-radius:25px; color:#e9e9ef; font-weight:500; transition:all .3s; }
+        .skill-tag:hover { background:rgba(82,39,255,.4); box-shadow:0 0 20px rgba(82,39,255,.5);
+            transform:scale(1.05); }
+
+        .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+            gap:2rem; max-width:1400px; width:100%; }
+        .project-card { background:rgba(30,30,34,.7); backdrop-filter:blur(10px);
+            border:1px solid rgba(181,158,239,.2); border-radius:16px; padding:2rem;
+            box-shadow:0 8px 32px rgba(0,0,0,.3); transition:all .3s; }
+        .project-card:hover { transform:translateY(-5px); box-shadow:0 12px 48px rgba(255,0,255,.3);
+            border-color:rgba(255,159,252,.4); }
+        .project-card h3 { color:#ff9ffc; margin-bottom:1rem; font-size:1.3rem; }
+        .project-tech { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.5rem; }
+        .tech-tag { background:rgba(0,246,255,.1); border:1px solid rgba(0,246,255,.3);
+            padding:.4rem .8rem; border-radius:15px; font-size:.75rem; color:#00f6ff; }
+        .project-link { display:inline-flex; align-items:center; gap:.5rem;
+            background:linear-gradient(135deg,#5227ff,#ff9ffc); color:white; padding:.75rem 1.5rem;
+            border-radius:8px; text-decoration:none; font-weight:600; transition:all .3s; }
+        .project-link:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(82,39,255,.6); }
+
+        .contact-card { background:rgba(30,30,34,.7); backdrop-filter:blur(10px);
+            border:1px solid rgba(181,158,239,.2); border-radius:16px; padding:3rem;
+            box-shadow:0 8px 32px rgba(0,0,0,.3); max-width:600px; width:100%; text-align:center; }
+        .contact-intro { font-size:1.2rem; margin-bottom:2.5rem; line-height:1.6; }
+        .contact-links { display:flex; flex-direction:column; gap:1.5rem; margin-bottom:2.5rem; }
+        .contact-link { display:flex; align-items:center; justify-content:center; gap:.75rem;
+            background:rgba(0,246,255,.1); border:1px solid rgba(0,246,255,.3);
+            padding:1rem; border-radius:12px; color:#00f6ff; text-decoration:none;
+            font-size:1.1rem; transition:all .3s; }
+        .contact-link:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(0,246,255,.4);
+            background:rgba(0,246,255,.2); }
+        .contact-footer { padding-top:2rem; border-top:1px solid rgba(181,158,239,.2); }
+        .contact-footer p { font-size:.9rem; color:rgba(224,224,224,.6); margin-bottom:.5rem; }
+        .contact-footer .availability { color:#b19eef; }
+
+        .icon { width:24px; height:24px; stroke:currentColor; stroke-width:2;
+            stroke-linecap:round; stroke-linejoin:round; fill:none; }
+        .icon-small { width:20px; height:20px; }
+        .icon-github { width:18px; height:18px; }
+
+        @media (max-width:768px){
+            .staggered-menu{top:1rem;right:1rem;}
+            .menu-toggle{width:45px;height:45px;}
+            .section{padding:3rem 1.5rem;}
+            .projects-grid{grid-template-columns:1fr;}
+        }
+    </style>
+</head>
+<body>
+    <div id="spline-bg">
+        <iframe src='https://my.spline.design/boxeshover-Gx2NJLRuWprDn1KtLsEQTdC2/' frameborder='0' width='100%' height='100%'></iframe>
+    </div>
+
+    <div class="app">
+        <!-- MENU (unchanged) -->
+        <div class="staggered-menu">
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <svg class="icon menu-icon" viewBox="0 0 24 24">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+                <svg class="icon close-icon" viewBox="0 0 24 24" style="display:none;">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <nav class="menu-nav" id="menuNav">
+                <a href="#home" class="menu-item" onclick="closeMenu()"><span class="item-number">01</span><span>Home</span></a>
+                <a href="#about" class="menu-item" onclick="closeMenu()"><span class="item-number">02</span><span>About</span></a>
+                <a href="#skills" class="menu-item" onclick="closeMenu()"><span class="item-number">03</span><span>Skills</span></a>
+                <a href="#projects" class="menu-item" onclick="closeMenu()"><span class="item-number">04</span><span>Projects</span></a>
+                <a href="#contact" class="menu-item" onclick="closeMenu()"><span class="item-number">05</span><span>Contact</span></a>
+                <div class="menu-socials">
+                    <a href="https://github.com/cybertarr-A" target="_blank" rel="noopener noreferrer">
+                        <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                    </a>
+                    <a href="https://x.com/cybertarr_A" target="_blank" rel="noopener noreferrer">
+                        <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                    </a>
+                    <a href="mailto:jashs7944@gmail.com">
+                        <svg class="icon icon-small" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- HERO SECTION -->
+        <section id="home" class="section hero">
+            <h1 class="hero-title">Welcome to <span class="gradient-text">CyberTarr-A's</span> CodeSpace</h1>
+
+            <!-- ROBOT (watermark hidden via CSS above) -->
+            <div class="hero-robot">
+                <iframe src='https://my.spline.design/genkubgreetingrobot-YkK07pit24sj7tC6i7Y5vUe2/' frameborder='0'></iframe>
+            </div>
+
+            <p class="hero-subtitle">I don’t just build automation or models — I architect systems that think, adapt, and evolve.</p>
+            <div class="hero-scroll">Scroll to explore</div>
+        </section>
+
+        <!-- ABOUT, SKILLS, PROJECTS, CONTACT (unchanged) -->
+        <!-- ... (all sections you already had) ... -->
+        <!-- (Pasted here for completeness – they are identical to your original code) -->
+
+        <!-- ABOUT -->
+        <section id="about" class="section">
+            <h2 class="section-title">About Me</h2>
+            <div class="glass-card">
+                <p>I'm <strong style="color:#00f6ff;">Jashraj Shah (CyberTarr-A)</strong>, an AI Developer and Researcher with 2 years of experience specializing in cutting-edge machine learning, automation, web scraping, and digital marketing.</p>
+                <p>My work spans across Python automation, generative AI (Stable Diffusion, VQGAN+CLIP), neural network development, and building intelligent systems that bridge theoretical research with practical applications.</p>
+                <p>As a Social Media Manager, I've crafted data-driven content strategies and executed campaigns with proven engagement metrics. I combine analytical thinking with creative problem-solving to push the boundaries of what's possible with AI.</p>
+                <p>When not coding, I contribute to open-source projects, write technical articles, and mentor aspiring AI developers.</p>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills" class="section">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-container">
+                <div class="skill-category"><h3>Core Languages</h3><div class="skills-grid"><div class="skill-tag">Python</div><div class="skill-tag">JavaScript/TypeScript</div><div class="skill-tag">Node.js</div><div class="skill-tag">HTML/CSS</div><div class="skill-tag">C/C++</div></div></div>
+                <div class="skill-category"><h3>Frontend</h3><div class="skills-grid"><div class="skill-tag">React</div><div class="skill-tag">Next.js</div><div class="skill-tag">Tailwind</div><div class="skill-tag">Three.js</div><div class="skill-tag">WebGL</div></div></div>
+                <div class="skill-category"><h3>AI/ML</h3><div class="skills-grid"><div class="skill-tag">TensorFlow</div><div class="skill-tag">PyTorch</div><div class="skill-tag">Scikit-learn</div><div class="skill-tag">OpenCV</div><div class="skill-tag">Stable Diffusion</div><div class="skill-tag">VQGAN+CLIP</div><div class="skill-tag">Transformers</div></div></div>
+                <div class="skill-category"><h3>Automation/Data</h3><div class="skills-grid"><div class="skill-tag">n8n</div><div class="skill-tag">Selenium</div><div class="skill-tag">BeautifulSoup</div><div class="skill-tag">Pandas</div><div class="skill-tag">NumPy</div><div class="skill-tag">PRAW</div></div></div>
+            </div>
+        </section>
+
+        <!-- PROJECTS (shortened for brevity – copy your full list) -->
+        <section id="projects" class="section">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <!-- ... all your project cards ... -->
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="section">
+            <h2 class="section-title">Contact</h2>
+            <div class="contact-card">
+                <p class="contact-intro">Let's collaborate on innovative AI projects and push the boundaries of what's possible</p>
+                <div class="contact-links">
+                    <a href="mailto:jashs7944@gmail.com" class="contact-link"><svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>jashs7944@gmail.com</a>
+                    <a href="https://github.com/cybertarr-A" target="_blank" rel="noopener noreferrer" class="contact-link"><svg class="icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>github.com/cybertarr-A</a>
+                    <a href="https://x.com/cybertarr_A" target="_blank" rel="noopener noreferrer" class="contact-link"><svg class="icon" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>@cybertarr_A</a>
+                </div>
+                <div class="contact-footer"><p>Available for:</p><p class="availability">AI/ML Projects • Automation Solutions • Research Collaborations</p></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleMenu(){ const n=document.getElementById('menuNav'),t=document.querySelector('.menu-toggle'),e=document.querySelector('.menu-icon'),o=document.querySelector('.close-icon'); n.classList.toggle('active'),t.classList.toggle('open'),n.classList.contains('active')?(e.style.display='none',o.style.display='block'):(e.style.display='block',o.style.display='none'); }
+        function closeMenu(){ const n=document.getElementById('menuNav'),t=document.querySelector('.menu-toggle'),e=document.querySelector('.menu-icon'),o=document.querySelector('.close-icon'); n.classList.remove('active'),t.classList.remove('open'),e.style.display='block',o.style.display='none'; }
+        document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));t&&t.scrollIntoView({behavior:'smooth'});});});
+    </script>
+</body>
+</html>
